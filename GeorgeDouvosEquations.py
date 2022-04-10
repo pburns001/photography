@@ -61,7 +61,7 @@ def limits(f,N,u_ft,coc):
     v = u*f/(u-f)
     dv = 1/375*N*sqrt(562500*coc**2 - N**2)     # focus spread
     # compute vn and vf from v and dv
-    vf = v-dv/2
+    vf = v-dv/2                 # Assumes dv is small!!
     vn = vf + dv
     un = f*vn/(vn-f)
     uf = f*vf/(vf-f)
@@ -69,22 +69,29 @@ def limits(f,N,u_ft,coc):
         uf = math.inf
     return un/1000/meter_per_foot,uf/1000/meter_per_foot
 
-
+def hf(Ct,f):
+    dv = 750 * Ct**2
+    vf = f
+    vn = dv + f
+    un = f*vn/(vn-f)
+    uh = 2*un
+    Nopt = sqrt(375*dv)
+    return un/1000/meter_per_foot, uh/1000/meter_per_foot, Nopt
 
 if __name__ == "__main__":
-    un = 189
-    uf = 1911
+    un = 60
+    uf = 4000
     f = 200
-    N = 8
+    N = 20
     c, Nopt, uopt_ft = opt(un, uf, f)
     print(
         f"near dist = {un:7.1f}ft, far dist = {uf:7.1f}ft, f = {f:4.1f}mm\nCOC = {c:6.3f}mm, Opt F# = {Nopt:3.1f}, Optimal focus distance = {uopt_ft:6.1f}ft")
     print("\n\n")
 
-    f = 24
-    N = 8
-    u_ft = 100
-    coc = 0.020
+    f = 200
+    N = 20
+    u_ft = 220
+    coc = 0.040
     un,uf = limits(f,N,u_ft,coc)
     un_ft = np.floor(un)
     un_in = np.round((un%1)*12)

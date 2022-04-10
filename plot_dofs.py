@@ -36,4 +36,29 @@ ylabel('ft')
 legend()
 
 
+f = 200
+coc= 0.020 # mm
+N = 8
+us = np.arange(100,4000,10)
+nn = len(us)
+NDs = np.zeros(nn)
+FDs = np.zeros(nn)
+for ii,u in enumerate(us):
+   NDs[ii], FDs[ii] = limits(f,N,u,coc)
+
+figure
+subplot(2,1,1);plot(us,NDs,label='Near Dist');grid(True,'both',alpha = 0.2)
+plt.minorticks_on()
+xlabel('focus dist ft')
+ylabel('ft')
+legend()
+title('f = %4.1f, N = %d, COC = %5.3fmm'%(f,N,coc))
+
+subplot(2,1,2);plot(us,FDs,label='Far Dist');grid(True,'both',alpha = 0.2)
+plt.minorticks_on()
+xlabel('focus dist ft')
+ylabel('ft')
+legend()
+
+
 print("sim finished")
