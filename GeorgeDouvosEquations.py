@@ -70,28 +70,28 @@ def limits(f,N,u_ft,coc):
     return un/1000/meter_per_foot,uf/1000/meter_per_foot
 
 def hf(Ct,f):
-    dv = 750 * Ct**2
-    vf = f
-    vn = dv + f
-    un = f*vn/(vn-f)
-    uh = 2*un
+    dv = 750 * Ct**2        # dv from total coc equation using optimum N
+    vf = f                  # as uf -> inf vf -> focal length
+    vn = dv + f             # dv = vn - vf
+    un = f*vn/(vn-f)        # object - image relationship
+    uh = 2*un               #
     Nopt = sqrt(375*dv)
     return un/1000/meter_per_foot, uh/1000/meter_per_foot, Nopt
 
 if __name__ == "__main__":
-    un = 60
-    uf = 4000
-    f = 200
-    N = 20
+    un = 1.0 * 5280
+    uf = 1e6
+    f = 280
+    N = 8
     c, Nopt, uopt_ft = opt(un, uf, f)
     print(
         f"near dist = {un:7.1f}ft, far dist = {uf:7.1f}ft, f = {f:4.1f}mm\nCOC = {c:6.3f}mm, Opt F# = {Nopt:3.1f}, Optimal focus distance = {uopt_ft:6.1f}ft")
     print("\n\n")
 
-    f = 200
-    N = 20
-    u_ft = 220
-    coc = 0.040
+    f = 280
+    N = 11
+    u_ft = 1.5 * 5280
+    coc = 0.020
     un,uf = limits(f,N,u_ft,coc)
     un_ft = np.floor(un)
     un_in = np.round((un%1)*12)
@@ -103,4 +103,4 @@ if __name__ == "__main__":
     else:
         print(f"Near dist = {un_ft}'{un_in}\", Far dist = {uf_ft}'{uf_in}\"")
 
-
+    print("sim finished")
